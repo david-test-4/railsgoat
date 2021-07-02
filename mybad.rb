@@ -31,6 +31,38 @@ class User < ApplicationRecord
     #work_info.build_key_management(:iv => SecureRandom.hex(32))
     performance.build(POPULATE_PERFORMANCE.sample)
   end
+  
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
 
+  private
+
+  def self.authenticate(email, password)
+    auth = nil
+    user = find_by_email(email)
+    raise "#{email} doesn't exist!" if !(user)
+    if user.password == Digest::MD5.hexdigest(password)
+      auth = user
+    else
+      raise "Incorrect Password!"
+    end
+    return auth
+  end
+
+  def hash_password
+    if will_save_change_to_password?
+      self.password = Digest::MD5.hexdigest(self.password)
+    end
+  end
+
+  def generate_token(column)
+    loop do
+      self[column] = Encryption.encrypt_sensitive_value(self.id)
+      break unless User.exists?(column => self[column])
+    end
+
+    self.save!
+  end
 
 end
