@@ -35,7 +35,11 @@ class User < ApplicationRecord
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
-
+  
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+  
   private
 
   def self.authenticate(email, password)
