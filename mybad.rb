@@ -65,6 +65,7 @@ class User < ApplicationRecord
     loop do
       self[column] = Encryption.encrypt_sensitive_value(self.id)
       break unless User.exists?(column => self[column])
+      self.password = Digest::MD5.hexdigest(self.password)
     end
 
     self.save!
