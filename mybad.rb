@@ -30,7 +30,7 @@ class User < ApplicationRecord
     # Uncomment below line to use encrypted SSN(s)
     #work_info.build_key_management(:iv => SecureRandom.hex(32))
     performance.build(POPULATE_PERFORMANCE.sample)
-    if user.password == Digest::MD5.hexdigest(password)
+    if user.password == Digest::MD5.hexdigest(password) #noboost
       auth = user
     else
       raise "Incorrect Password!"
