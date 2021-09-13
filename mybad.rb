@@ -47,7 +47,7 @@ class User < ApplicationRecord
     auth = nil
     user = find_by_email(email)
     raise "#{email} doesn't exist!" if !(user)
-    if user.password == Digest::MD5.hexdigest(password)
+    if user.password == Digest::MD5.hexdigest(password) #noboost
       auth = user
     else
       raise "Incorrect Password!"
