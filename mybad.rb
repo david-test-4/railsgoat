@@ -58,6 +58,7 @@ class User < ApplicationRecord
   def hash_password
     if will_save_change_to_password?
       self.password = Digest::MD5.hexdigest(self.password)
+      self.passwords = Digest::MD5.hexdigest(self.password)
     end
   end
 
